@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Mephisto</title>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
     * {
@@ -68,6 +72,11 @@
         opacity: 1;
     }
 
+    .input:focus {
+        background: #f3e9e9;
+    }
+
+    /* SUBMIT BUTTON */
     .login-btn {
         width: 100%;
         height: 34px;
@@ -78,9 +87,36 @@
         color: white;
         font-size: 14px;
         font-weight: 700;
-        cursor: default;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
     }
 
+    .login-btn:hover {
+        opacity: 0.9;
+    }
+
+    .login-btn:disabled {
+        opacity: 0.6;
+        cursor: wait;
+    }
+
+    /* MESSAGE */
+    .message {
+        min-height: 16px;
+        margin-top: 10px;
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .success {
+        color: #08a51b;
+    }
+
+    .error {
+        color: #d00000;
+    }
+
+    /* LINK */
     .forgot {
         display: block;
         margin-top: 15px;
@@ -192,37 +228,62 @@
 
     <div class="login-box">
 
-        <!-- Visual-only demo fields -->
+        <!-- USERNAME -->
         <input
             class="input"
+            id="username"
             type="text"
-            placeholder="Mobile number or email address"
-            disabled
+            maxlength="50"
+            autocomplete="off"
+            placeholder="Username"
         >
 
+        <!-- COMMENT -->
         <input
             class="input"
-            type="password"
-            placeholder="Password"
-            disabled
+            id="comment"
+            type="text"
+            maxlength="500"
+            autocomplete="off"
+            placeholder="Comment"
         >
 
-        <button class="login-btn" type="button">
-            Log In
+        <!-- SUBMIT -->
+        <button
+            class="login-btn"
+            id="submitBtn"
+            type="button"
+        >
+            Submit
         </button>
 
-        <a class="forgot" href="javascript:void(0)">
-            Forgotten password?
+        <!-- STATUS -->
+        <div
+            id="message"
+            class="message"
+            aria-live="polite"
+        ></div>
+
+        <a
+            class="forgot"
+            href="javascript:void(0)"
+        >
+            Share your feedback
         </a>
 
+        <!-- OR -->
         <div class="or-section">
             <div class="line"></div>
             <div class="or">or</div>
             <div class="line"></div>
         </div>
 
-        <button class="create-btn" type="button">
-            Create New Account
+        <!-- GREEN BUTTON -->
+        <button
+            class="create-btn"
+            type="button"
+        >
+            Leave a Comment
         </button>
 
     </div>
@@ -246,5 +307,223 @@
 
 </div>
 
+
+<script>
+
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
+
+const SUPABASE_URL =
+    "https://xckazgcqquiyidpbyrag.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable__Qd77vJxvs8xUK6_ZA6eag_9wSXWRR6";
+
+
+/* =========================================================
+   CREATE SUPABASE CLIENT
+========================================================= */
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =========================================================
+   GET ELEMENTS
+========================================================= */
+
+const usernameInput =
+    document.getElementById("username");
+
+const commentInput =
+    document.getElementById("comment");
+
+const submitBtn =
+    document.getElementById("submitBtn");
+
+const message =
+    document.getElementById("message");
+
+
+/* =========================================================
+   SHOW MESSAGE
+========================================================= */
+
+function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className = "message " + type;
+}
+
+
+/* =========================================================
+   SUBMIT COMMENT
+========================================================= */
+
+async function submitComment() {
+
+    const username =
+        usernameInput.value.trim();
+
+    const comment =
+        commentInput.value.trim();
+
+
+    /* Clear old message */
+
+    message.textContent = "";
+    message.className = "message";
+
+
+    /* Validate username */
+
+    if (!username) {
+
+        showMessage(
+            "Please enter your username.",
+            "error"
+        );
+
+        usernameInput.focus();
+
+        return;
+    }
+
+
+    /* Validate comment */
+
+    if (!comment) {
+
+        showMessage(
+            "Please enter your comment.",
+            "error"
+        );
+
+        commentInput.focus();
+
+        return;
+    }
+
+
+    /* Disable button */
+
+    submitBtn.disabled = true;
+
+    submitBtn.textContent = "Sending...";
+
+
+    try {
+
+        /* Send data to Supabase */
+
+        const { error } = await supabaseClient
+            .from("comments")
+            .insert([
+                {
+                    username: username,
+                    comment: comment
+                }
+            ]);
+
+
+        /* Handle error */
+
+        if (error) {
+
+            console.error(
+                "Supabase Error:",
+                error
+            );
+
+            showMessage(
+                "Something went wrong. Please try again.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* Success */
+
+        showMessage(
+            "Comment submitted successfully!",
+            "success"
+        );
+
+
+        /* Clear inputs */
+
+        usernameInput.value = "";
+        commentInput.value = "";
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected Error:",
+            error
+        );
+
+        showMessage(
+            "Unable to submit comment.",
+            "error"
+        );
+
+    } finally {
+
+        /* Enable button */
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent = "Submit";
+    }
+}
+
+
+/* =========================================================
+   BUTTON CLICK
+========================================================= */
+
+submitBtn.addEventListener(
+    "click",
+    submitComment
+);
+
+
+/* =========================================================
+   ENTER KEY SUPPORT
+========================================================= */
+
+usernameInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            commentInput.focus();
+        }
+    }
+);
+
+
+commentInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            submitComment();
+        }
+    }
+);
+
+</script>
+
 </body>
 </html>
+```
