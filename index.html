@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mephisto</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #ffffff;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+    }
+
+    .page {
+        width: 100%;
+        max-width: 302px;
+        min-height: 640px;
+        padding-top: 70px;
+        text-align: center;
+        position: relative;
+    }
+
+    /* LOGO */
+    .logo {
+        color: #1877f2;
+        font-size: 27px;
+        line-height: 32px;
+        font-weight: 700;
+        letter-spacing: -1.2px;
+        margin-bottom: 29px;
+    }
+
+    /* FORM */
+    .login-box {
+        width: 100%;
+    }
+
+    .input {
+        width: 100%;
+        height: 33px;
+        border: none;
+        outline: none;
+        background: #f7eeee;
+        border-radius: 8px;
+        padding: 0 14px;
+        font-size: 11px;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .input::placeholder {
+        color: #8b8b8b;
+        opacity: 1;
+    }
+
+    .login-btn {
+        width: 100%;
+        height: 34px;
+        margin-top: 15px;
+        border: none;
+        border-radius: 7px;
+        background: #0d39ed;
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: default;
+    }
+
+    .forgot {
+        display: block;
+        margin-top: 15px;
+        color: #3978e8;
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    /* OR */
+    .or-section {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 27px;
+        margin-bottom: 26px;
+    }
+
+    .line {
+        height: 1px;
+        background: #999;
+        flex: 1;
+    }
+
+    .or {
+        font-size: 13px;
+        color: #333;
+        padding: 0 10px;
+    }
+
+    /* CREATE BUTTON */
+    .create-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        height: 32px;
+        padding: 0 15px;
+
+        background: #08a51b;
+        color: white;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        border: none;
+        cursor: default;
+    }
+
+    /* FOOTER */
+    .footer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 492px;
+        text-align: center;
+    }
+
+    .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 19px;
+    }
+
+    .footer-links span {
+        font-size: 11px;
+        color: #333;
+    }
+
+    .meta {
+        margin-top: 26px;
+        font-size: 12px;
+        color: #777;
+    }
+
+    .meta-symbol {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 15px;
+        height: 15px;
+
+        border: 1px solid #777;
+        border-radius: 50%;
+
+        font-size: 10px;
+        font-weight: 700;
+
+        margin: 0 2px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 350px) {
+        .page {
+            max-width: 302px;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- MEPhISTO BRAND -->
+    <div class="logo">Mephisto</div>
+
+    <div class="login-box">
+
+        <!-- Visual-only demo fields -->
+        <input
+            class="input"
+            type="text"
+            placeholder="Mobile number or email address"
+            disabled
+        >
+
+        <input
+            class="input"
+            type="password"
+            placeholder="Password"
+            disabled
+        >
+
+        <button class="login-btn" type="button">
+            Log In
+        </button>
+
+        <a class="forgot" href="javascript:void(0)">
+            Forgotten password?
+        </a>
+
+        <div class="or-section">
+            <div class="line"></div>
+            <div class="or">or</div>
+            <div class="line"></div>
+        </div>
+
+        <button class="create-btn" type="button">
+            Create New Account
+        </button>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+
+        <div class="footer-links">
+            <span>About</span>
+            <span>Help</span>
+            <span>More</span>
+        </div>
+
+        <div class="meta">
+            Meta
+            <span class="meta-symbol">C</span>
+            2022
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
